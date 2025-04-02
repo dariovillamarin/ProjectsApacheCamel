@@ -23,13 +23,30 @@ public class App
             @Override
             public void configure() {
                 // Ruta simple: mover archivos .txt de input a output
+                
                 from("file://input?noop=true")
+                    .process(exchange -> {
+                    String nombreArchivo = exchange.getIn().getHeader("CamelFileName", String.class);
+                    System.out.println("Archivo copiado: " + nombreArchivo);
+                     })
                     .to("file://output");
             }
         });
 
         // Iniciar el contexto
         context.start();
+
+        // Mostrar mensaje "Escuchando..." cada 5 segundos en un hilo separado
+        new Thread(() -> {
+            while (true) {
+                System.out.println("Escuchando...");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }).start();
 
         // Mantener la aplicación viva, escuchando
         Thread.currentThread().join();;

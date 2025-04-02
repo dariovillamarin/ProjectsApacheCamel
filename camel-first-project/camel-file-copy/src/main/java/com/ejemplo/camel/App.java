@@ -31,11 +31,11 @@ public class App
         // Iniciar el contexto
         context.start();
 
-        // Esperar un poco para que se copien los archivos
-        Thread.sleep(5000);
+        // Mantener la aplicación viva, escuchando
+        Thread.currentThread().join();;
 
         // Detener el contexto
-        context.stop();
+        //context.stop();
     
     }
 }
